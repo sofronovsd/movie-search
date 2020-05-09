@@ -1,5 +1,7 @@
 .alert {
 
+  overflow: hidden;
+
   &_hidden {
     opacity: 0;
   }
