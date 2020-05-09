@@ -2,7 +2,7 @@ import * as helper from './Helper';
 import { showSpinner, hideSpinner } from './Spinner';
 import { showAlert, hideAlert } from './Alert';
 import state from './State';
-import translate from './YandexTranslater';
+import { translate } from './YandexTranslater';
 import initSwiper from './Swiper';
 import { executeDefaultMovieRequest, executeMovieRequest } from './RequestExecutor';
 

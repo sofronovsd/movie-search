@@ -1,12 +1,12 @@
 import state from './State';
-import * as service from './OmdbRestService';
 import * as alert from './Alert';
 import Card from './Card';
 import { getSwiperWrapper } from './Helper';
+import { loadMovies } from './OmdbRestService';
 
 export function executeMovieRequest(isNewSearch, searchValue) {
   state.page = isNewSearch ? 1 : state.page + 1;
-  return service.loadMovies(searchValue, state.page)
+  return loadMovies(searchValue, state.page)
     .then((movies) => {
       if (movies instanceof Error) {
         alert.showAlert(searchValue);
@@ -33,7 +33,7 @@ export function executeMovieRequest(isNewSearch, searchValue) {
 }
 
 export function executeDefaultMovieRequest() {
-  return service.loadMovies(state.searchString, state.page)
+  return loadMovies(state.searchString, state.page)
     .then((movies) => {
       if (movies instanceof Error) {
         alert.showAlert(state.searchString);
