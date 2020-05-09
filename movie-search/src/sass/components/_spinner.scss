@@ -1,0 +1,9 @@
+.spinner {
+  position: absolute;
+  right: 100px;
+  align-self: center;
+
+  &_hidden {
+    display: none;
+  }
+}

@@ -1,0 +1,21 @@
+.slider {
+  display: flex;
+  position: relative;
+  padding: 10px 5px;
+
+  &__arrow {
+    cursor: pointer;
+    align-self: center;
+    transform: scale(2);
+    transition: .5s;
+
+    &:hover {
+      transform: scale(3);
+    }
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+  }
+}

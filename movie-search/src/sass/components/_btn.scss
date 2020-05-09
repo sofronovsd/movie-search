@@ -1,0 +1,10 @@
+.btn {
+
+  &_clear {
+    background: url("../../img/clear.svg") center no-repeat;
+
+    &:hover {
+      background: $color-primary url("../../img/clear-white.svg") center no-repeat;
+    }
+  }
+}

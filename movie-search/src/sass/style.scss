@@ -1,0 +1,27 @@
+// Bootstrap
+@import "~bootstrap";
+
+// Swiper
+@import "~swiper/css/swiper.min.css";
+
+// Abstract
+@import "abstract/constants";
+
+// Base
+@import "~normalize.css";
+@import "base/base";
+
+// Layouts
+@import "layouts/header";
+@import "layouts/main";
+@import "layouts/footer";
+
+// Components
+@import "components/logo";
+@import "components/slider";
+@import "components/arrow";
+@import "components/icon";
+@import "components/alert";
+@import "components/card";
+@import "components/btn";
+@import "components/spinner";

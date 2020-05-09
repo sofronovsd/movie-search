@@ -1,0 +1,20 @@
+.main {
+  height: 100%;
+  width: 100%;
+  max-width: $desktop-max-width;
+  margin: 100px auto 50px;
+  padding: 40px 20px 0;
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  //@media screen and (max-width: $desktop-max-width) {
+  //  max-width: $tablet-max-width;
+  //}
+  //
+  //@media screen and (max-width: $tablet-max-width) {
+  //  max-width: $mobile-max-width;
+  //}
+
+}

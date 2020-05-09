@@ -1,0 +1,10 @@
+// Colors
+$color-primary: $blue;
+$color-secondary: #24292e;;
+$background-gradient: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
+$background-image: url("../../img/css-lattice-pattern.png") center no-repeat;
+
+// Media screens
+$desktop-max-width: 1024px;
+$tablet-max-width: 768px;
+$mobile-max-width: 375px;
