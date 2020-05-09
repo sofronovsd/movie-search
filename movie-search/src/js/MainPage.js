@@ -2,9 +2,8 @@ import * as helper from "./Helper";
 import Swiper from "swiper";
 import * as service from "./OmdbRestService";
 import Card from "./Card";
-
-let mySwiper;
-let page = 1;
+import state from "./State";
+import translate from "./YandexTranslater";
 
 export default function initMainPage() {
     initStartContent();
@@ -36,15 +35,20 @@ function initClearButton() {
 function initSearchButton() {
     const searchButton = helper.getSearchButton();
     searchButton.addEventListener('click', () => {
-        showSpinner();
         hideAlert();
+        showSpinner();
         searchButton.focus();
-        const searchValue = getSearchValue();
-        executeMovieRequest(true, searchValue)
-            .then(() => {
-                initSwiper();
-                hideSpinner()
-            });
+        getSearchValue()
+            .then(() => executeMovieRequest(true, state.searchString)
+                .then(() => {
+                    initSwiper();
+                    hideSpinner()
+                })
+            )
+            .catch(() => {
+                hideSpinner();
+                showAlert(state.searchString)
+            })
     });
 }
 
@@ -81,14 +85,21 @@ const showSpinner = () => {
 
 const getSearchValue = () => {
     const searchInput = helper.getSearchInput();
-    return searchInput.value.trim() === '' ? 'pie' : searchInput.value;
+    const searchValue = searchInput.value;
+    state.searchString = searchValue;
+    if (/[А-яЁё]/.test(searchValue)) {
+        return translate(searchValue)
+            .then(response => state.searchString = response.text[0]);
+    } else {
+        return Promise.resolve();
+    }
 };
 
 const initSwiper = () => {
-    mySwiper = new Swiper('.swiper-container', {
-        slidesPerView: 4,
+    state.swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        spaceBetween: 50,
         speed: 1000,
-        spaceBetween: 30,
         grabCursor: true,
         loop: false,
         pagination: {
@@ -99,34 +110,43 @@ const initSwiper = () => {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
         },
+        breakpoints: {
+            376: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 30,
+            },
+        }
     });
 
-    mySwiper.on('slideChange', function () {
-        const length = mySwiper.slides.length;
-        if (length - mySwiper.activeIndex < 8) {
-            const searchValue = getSearchValue();
-            executeMovieRequest(false, searchValue)
+    state.swiper.on('slideChange', function () {
+        const length = state.swiper.slides.length;
+        if (length - state.swiper.activeIndex < 8) {
+            executeMovieRequest(false, state.searchString)
                 .then(() => hideSpinner());
         }
     });
 };
 
 const executeMovieRequest = (isNewSearch, searchValue) => {
-    if (isNewSearch) {
-        page = 1;
-    } else {
-        page++;
-    }
-    return service.loadMovies(searchValue, page)
+    state.page = isNewSearch ? 1 : state.page + 1;
+    return service.loadMovies(searchValue, state.page)
         .then(movies => {
             if (movies instanceof Error) {
                 showAlert(searchValue);
                 return;
             }
             if (isNewSearch) {
-                mySwiper.off('slideChange');
-                mySwiper.removeAllSlides();
-                mySwiper.destroy();
+                state.swiper.off('slideChange');
+                state.swiper.removeAllSlides();
+                state.swiper.destroy();
             }
             for (let i = 0; i < movies.length; i++) {
                 const slide = document.createElement('div');
@@ -135,8 +155,8 @@ const executeMovieRequest = (isNewSearch, searchValue) => {
                 if (isNewSearch) {
                     document.querySelector('.swiper-wrapper').append(slide);
                 } else {
-                    mySwiper.appendSlide(slide);
-                    mySwiper.update();
+                    state.swiper.appendSlide(slide);
+                    state.swiper.update();
                 }
             }
         })
@@ -144,11 +164,10 @@ const executeMovieRequest = (isNewSearch, searchValue) => {
 };
 
 const executeDefaultMovieRequest = () => {
-    const searchValue = 'pie';
-    return service.loadMovies(searchValue, page)
+    return service.loadMovies(state.searchString, state.page)
         .then(movies => {
             if (movies instanceof Error) {
-                showAlert(searchValue);
+                showAlert(state.searchString);
                 return;
             }
             for (let i = 0; i < movies.length; i++) {
@@ -158,5 +177,5 @@ const executeDefaultMovieRequest = () => {
                 document.querySelector('.swiper-wrapper').append(slide);
             }
         })
-        .catch(() => showAlert(searchValue));
+        .catch(() => showAlert(state.searchString));
 };

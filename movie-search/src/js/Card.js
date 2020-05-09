@@ -1,7 +1,7 @@
 export default class Card {
     constructor(movie) {
         this.title = movie.Title;
-        this.img = movie.Poster === 'N/A' ? '../img/image-not-found.png' : movie.Poster;
+        this.img = movie.Poster === 'N/A' || movie.Poster === undefined ? '../img/image-not-found.png' : movie.Poster;
         this.year = movie.Year;
         this.id = movie.imdbID;
         this.rating = movie.imdbRating;
