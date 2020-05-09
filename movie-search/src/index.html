@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MovieSearch</title>
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <h1 class="logo">MovieSearch</h1>
+    </header>
+    <main class="main">
+        <div class="input-group mb-3">
+            <input id="search-input" type="text" class="form-control" autofocus autocomplete="off"
+                   placeholder="Search movie..." aria-label="Search for..." aria-describedby="search-button">
+            <div class="spinner-border text-primary spinner spinner_hidden">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary btn_clear" type="button" id="clear-button"></button>
+                <button class="btn btn-primary" type="button" id="search-button">Search</button>
+            </div>
+        </div>
+        <div class="alert alert-danger alert_hidden"></div>
+        <!-- Slider main container -->
+        <div class="swiper-container">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </main>
+    <footer class="footer">
+        <span>RS School 2020q1</span>
+        <a href="https://github.com/sofronovsd" target="_blank">
+            <img class="icon" src="img/github-logo.svg" alt="github">
+            sofronovsd
+        </a>
+    </footer>
+</div>
+</body>
+</html>
