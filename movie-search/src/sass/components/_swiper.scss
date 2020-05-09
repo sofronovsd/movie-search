@@ -1,0 +1,19 @@
+.swiper-container {
+  width: 95%;
+  height: 100%;
+}
+
+.swiper-pagination, .swiper-button-next, .swiper-button-prev {
+
+  @media screen and (max-width: $mobile-max-width) {
+    display: none;
+  }
+}
+
+.swiper-button-prev, .swiper-button-next {
+  top: calc(50% + 50px);
+  &:hover {
+    transition: .5s;
+    transform: scale(1.5);
+  }
+}

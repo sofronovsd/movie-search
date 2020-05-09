@@ -1,3 +1,5 @@
 .arrow {
-  align-content: center;
+  &_hidden {
+    display: none;
+  }
 }
