@@ -1,11 +1,11 @@
 const loadMovieById = (id) => {
-  const movieInfoUrl = `http://www.omdbapi.com/?i=${id}&apikey=34b4c91`;
+  const movieInfoUrl = `https://www.omdbapi.com/?i=${id}&apikey=34b4c91`;
   return fetch(movieInfoUrl)
     .then((response) => response.json());
 };
 
 const loadMovies = (searchValue, page) => {
-  const url = `http://www.omdbapi.com/?s=${searchValue}&page=${page}&apikey=34b4c91`;
+  const url = `https://www.omdbapi.com/?s=${searchValue}&page=${page}&apikey=34b4c91`;
   return fetch(url)
     .then((response) => response.json())
     .then((response) => {
