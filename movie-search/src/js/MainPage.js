@@ -5,6 +5,10 @@ import state from './State';
 import { translate } from './YandexTranslater';
 import initSwiper from './Swiper';
 import { executeDefaultMovieRequest, executeMovieRequest } from './RequestExecutor';
+import showInfoAlert from './InfoAlert';
+import { getSwiperWrapper, getBody } from './Helper';
+
+import Modal from './Modal';
 
 const getSearchValue = () => {
   const searchInput = helper.getSearchInput();
@@ -14,6 +18,7 @@ const getSearchValue = () => {
     return translate(searchValue)
       .then((response) => {
         [state.searchString] = response.text;
+        showInfoAlert(state.searchString);
       });
   }
   return Promise.resolve();
@@ -68,9 +73,21 @@ const initStartContent = () => {
     });
 };
 
+const addSwiperWrapperClickHandler = () => {
+  getSwiperWrapper().addEventListener('click', (e) => {
+    if (!e.target.classList.contains('card-title')) {
+      const closest = e.target.closest('.card');
+      const dataId = closest.getAttribute('data-id');
+      const card = state.slides.find((slide) => slide.id === dataId);
+      getBody().append(new Modal(card).render());
+    }
+  });
+};
+
 export default function initMainPage() {
   initStartContent();
   initSearchButton();
   initSearchInput();
   initClearButton();
+  addSwiperWrapperClickHandler();
 }

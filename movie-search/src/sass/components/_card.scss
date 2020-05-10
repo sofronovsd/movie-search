@@ -1,4 +1,5 @@
 .card {
+  max-width: 300px;
   &__rating-box {
     display: flex;
     align-items: flex-start;
@@ -6,5 +7,9 @@
 
   &-body {
     text-align: center;
+  }
+
+  &:hover {
+    box-shadow: 0 0 20px 0 $color-primary;
   }
 }

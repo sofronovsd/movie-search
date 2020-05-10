@@ -5,4 +5,11 @@
   &_hidden {
     opacity: 0;
   }
+
+  &_info {
+    position: fixed;
+    bottom: 60px;
+    right: 10px;
+    z-index: 1001;
+  }
 }

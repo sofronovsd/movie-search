@@ -1,5 +1,5 @@
 import state from './State';
-import * as alert from './Alert';
+import { showAlert } from './Alert';
 import Card from './Card';
 import { getSwiperWrapper } from './Helper';
 import { loadMovies } from './OmdbRestService';
@@ -9,18 +9,23 @@ export function executeMovieRequest(isNewSearch, searchValue) {
   return loadMovies(searchValue, state.page)
     .then((movies) => {
       if (movies instanceof Error) {
-        alert.showAlert(searchValue);
+        showAlert(searchValue);
         return;
       }
       if (isNewSearch) {
         state.swiper.off('slideChange');
+        state.swiper.off('click');
         state.swiper.removeAllSlides();
         state.swiper.destroy();
+        state.slides.length = 0;
       }
+      const cards = [];
       for (let i = 0; i < movies.length; i += 1) {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
-        slide.append(new Card(movies[i]).render());
+        const card = new Card(movies[i]);
+        cards.push(card);
+        slide.append(card.renderCard());
         if (isNewSearch) {
           getSwiperWrapper().append(slide);
         } else {
@@ -28,23 +33,28 @@ export function executeMovieRequest(isNewSearch, searchValue) {
           state.swiper.update();
         }
       }
+      state.slides = state.slides.concat(cards);
     })
-    .catch(() => alert.showAlert(searchValue));
+    .catch(() => showAlert(searchValue));
 }
 
 export function executeDefaultMovieRequest() {
   return loadMovies(state.searchString, state.page)
     .then((movies) => {
       if (movies instanceof Error) {
-        alert.showAlert(state.searchString);
+        showAlert(state.searchString);
         return;
       }
+      const cards = [];
       for (let i = 0; i < movies.length; i += 1) {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
-        slide.append(new Card(movies[i]).render());
+        const card = new Card(movies[i]);
+        cards.push(card);
+        slide.append(card.renderCard());
         getSwiperWrapper().append(slide);
       }
+      state.slides = state.slides.concat(cards);
     })
-    .catch(() => alert.showAlert(state.searchString));
+    .catch(() => showAlert(state.searchString));
 }

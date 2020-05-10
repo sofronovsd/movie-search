@@ -14,6 +14,10 @@ export function getSwiperWrapper() {
   return document.querySelector('.swiper-wrapper');
 }
 
+export function getBody() {
+  return document.querySelector('body');
+}
+
 export function getSearchInput() {
   return document.getElementById('search-input');
 }
