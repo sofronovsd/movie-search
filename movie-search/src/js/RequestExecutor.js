@@ -8,10 +8,6 @@ export function executeMovieRequest(isNewSearch, searchValue) {
   state.page = isNewSearch ? 1 : state.page + 1;
   return loadMovies(searchValue, state.page)
     .then((movies) => {
-      if (movies instanceof Error) {
-        showAlert(searchValue);
-        return;
-      }
       if (isNewSearch) {
         state.swiper.off('slideChange');
         state.swiper.off('click');
@@ -35,16 +31,14 @@ export function executeMovieRequest(isNewSearch, searchValue) {
       }
       state.slides = state.slides.concat(cards);
     })
-    .catch(() => showAlert(searchValue));
+    .catch((err) => {
+      showAlert(err);
+    });
 }
 
 export function executeDefaultMovieRequest() {
   return loadMovies(state.searchString, state.page)
     .then((movies) => {
-      if (movies instanceof Error) {
-        showAlert(state.searchString);
-        return;
-      }
       const cards = [];
       for (let i = 0; i < movies.length; i += 1) {
         const slide = document.createElement('div');
@@ -56,5 +50,8 @@ export function executeDefaultMovieRequest() {
       }
       state.slides = state.slides.concat(cards);
     })
-    .catch(() => showAlert(state.searchString));
+    .catch((err) => {
+      console.log(err);
+      showAlert(err);
+    });
 }

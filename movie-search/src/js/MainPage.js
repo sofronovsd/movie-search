@@ -19,7 +19,8 @@ const getSearchValue = () => {
       .then((response) => {
         [state.searchString] = response.text;
         showInfoAlert(state.searchString);
-      });
+      })
+      .catch((err) => showAlert(err));
   }
   return Promise.resolve();
 };
@@ -56,9 +57,9 @@ const initSearchButton = () => {
           initSwiper();
           hideSpinner();
         }))
-      .catch(() => {
+      .catch((err) => {
         hideSpinner();
-        showAlert(state.searchString);
+        showAlert(err);
       });
   });
 };
@@ -77,9 +78,11 @@ const addSwiperWrapperClickHandler = () => {
   getSwiperWrapper().addEventListener('click', (e) => {
     if (!e.target.classList.contains('card-title')) {
       const closest = e.target.closest('.card');
-      const dataId = closest.getAttribute('data-id');
-      const card = state.slides.find((slide) => slide.id === dataId);
-      getBody().append(new Modal(card).render());
+      if (closest) {
+        const dataId = closest.getAttribute('data-id');
+        const card = state.slides.find((slide) => slide.id === dataId);
+        getBody().append(new Modal(card).render());
+      }
     }
   });
 };
