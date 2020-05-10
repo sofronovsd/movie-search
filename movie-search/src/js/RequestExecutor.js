@@ -31,9 +31,7 @@ export function executeMovieRequest(isNewSearch, searchValue) {
       }
       state.slides = state.slides.concat(cards);
     })
-    .catch((err) => {
-      showAlert(err);
-    });
+    .catch((err) => showAlert(err));
 }
 
 export function executeDefaultMovieRequest() {
@@ -50,8 +48,5 @@ export function executeDefaultMovieRequest() {
       }
       state.slides = state.slides.concat(cards);
     })
-    .catch((err) => {
-      console.log(err);
-      showAlert(err);
-    });
+    .catch((err) => showAlert(err));
 }
