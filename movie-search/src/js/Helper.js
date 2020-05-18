@@ -30,3 +30,14 @@ export function showArrows() {
   const arrows = document.querySelectorAll('.arrow');
   arrows.forEach((el) => el.classList.remove('arrow_hidden'));
 }
+
+export function createElement(tagName, className, children) {
+  const element = document.createElement(tagName);
+  if (className) {
+    element.className = className;
+  }
+  if (children) {
+    children.forEach((child) => element.append(child));
+  }
+  return element;
+}

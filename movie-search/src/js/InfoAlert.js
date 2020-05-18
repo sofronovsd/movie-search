@@ -1,8 +1,9 @@
-import { getBody } from './Helper';
+import { createElement, getBody } from './Helper';
 
 export default function showInfoAlert(text) {
-  const info = document.createElement('div');
-  info.className = 'alert alert-primary alert_info';
+  const tagName = 'div';
+  const className = 'alert alert-primary alert_info';
+  const info = createElement(tagName, className);
   info.textContent = `Searching for '${text}'`;
 
   getBody().append(info);

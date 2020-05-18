@@ -1,39 +1,41 @@
+import { createElement } from './Helper';
+
 function createCardText(textContent) {
-  const cardText = document.createElement('p');
-  cardText.className = 'card-text';
+  const tagName = 'p';
+  const className = 'card-text';
+  const cardText = createElement(tagName, className);
   cardText.textContent = textContent;
   return cardText;
 }
 
 function createStar() {
-  const star = document.createElement('img');
+  const tagName = 'img';
+  const star = createElement(tagName);
   star.src = 'img/grade.svg';
   star.alt = 'star';
   return star;
 }
 
-function createCardBody() {
-  const cardBody = document.createElement('div');
-  cardBody.className = 'card-body';
-  return cardBody;
+function createCardBody(children) {
+  const tagName = 'div';
+  const className = 'card-body';
+  return createElement(tagName, className, children);
 }
 
-function createRatingBox() {
-  const ratingBox = document.createElement('div');
-  ratingBox.className = 'card__rating-box';
-  return ratingBox;
+function createRatingBox(children) {
+  const tagName = 'div';
+  const className = 'card__rating-box';
+  return createElement(tagName, className, children);
 }
 
 function createRow(title, value) {
-  const row = document.createElement('div');
-  row.style.display = 'flex';
-  row.style.justifyContent = 'space-between';
-
   const titleElement = createCardText(`${title}:`);
   const valueElement = createCardText(value);
-  valueElement.style.textAlign = 'right';
-  row.append(titleElement, valueElement);
-  return row;
+  valueElement.classList.add('card-text_right');
+
+  const tagName = 'div';
+  const className = 'card__row';
+  return createElement(tagName, className, [titleElement, valueElement]);
 }
 
 export default class Card {
@@ -50,57 +52,57 @@ export default class Card {
   }
 
   createImg() {
-    const img = document.createElement('img');
-    img.className = 'card-img-top';
+    const tagName = 'img';
+    const className = 'card-img-top';
+    const img = createElement(tagName, className);
     img.src = this.img;
     img.alt = 'poster';
     img.onerror = () => { img.src = '../img/image-not-found.png'; };
     return img;
   }
 
-  createLink() {
-    const link = document.createElement('a');
+  createLink(child) {
+    const tagName = 'a';
+    const link = createElement(tagName, [child]);
     link.href = `https://www.imdb.com/title/${this.id}`;
     link.target = '_blank';
     return link;
   }
 
   createTitle() {
-    const title = document.createElement('h5');
-    title.className = 'card-title';
+    const tagName = 'h5';
+    const className = 'card-title';
+    const title = createElement(tagName, className);
     title.textContent = this.title;
     return title;
   }
 
   createRating() {
-    const rating = document.createElement('p');
-    rating.className = 'card-rating';
+    const tagName = 'p';
+    const className = 'card-rating';
+    const rating = createElement(tagName, className);
     rating.textContent = this.rating;
     return rating;
   }
 
-  createCard() {
-    const card = document.createElement('div');
-    card.className = 'card';
+  createCard(children) {
+    const tagName = 'div';
+    const className = 'card';
+    const card = createElement(tagName, className, children);
     card.setAttribute('data-id', this.id);
     return card;
   }
 
   renderCard() {
-    const card = this.createCard();
     const img = this.createImg();
-    const cardBody = createCardBody();
-    const link = this.createLink();
     const title = this.createTitle();
+    const link = this.createLink(title);
     const cardText = createCardText(this.year);
-    const ratingBox = createRatingBox();
     const star = createStar();
     const rating = this.createRating();
-
-    link.append(title);
-    ratingBox.append(star, rating);
-    cardBody.append(link, cardText, ratingBox);
-    card.append(img, cardBody);
+    const ratingBox = createRatingBox([star, rating]);
+    const cardBody = createCardBody([link, cardText, ratingBox]);
+    const card = this.createCard([img, cardBody]);
 
     return card;
   }

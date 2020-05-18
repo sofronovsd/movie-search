@@ -1,8 +1,9 @@
-import { getBody } from './Helper';
+import { createElement, getBody } from './Helper';
 
-function createModalFade() {
-  const modalFade = document.createElement('div');
-  modalFade.className = 'modal fade show';
+function createModalFade(child) {
+  const tagName = 'div';
+  const className = 'modal fade show';
+  const modalFade = createElement(tagName, className, [child]);
   modalFade.addEventListener('click', (e) => {
     if (!e.target.classList.contains('card-title')) {
       getBody().removeChild(modalFade);
@@ -11,23 +12,22 @@ function createModalFade() {
   return modalFade;
 }
 
-function createModalDialog() {
-  const modalDialog = document.createElement('div');
-  modalDialog.className = 'modal-dialog modal-dialog-scrollable';
-  return modalDialog;
+function createModalBody(child) {
+  const tagName = 'div';
+  const className = 'modal-body';
+  return createElement(tagName, className, [child]);
 }
 
-function createModalContent() {
-  const modalContent = document.createElement('div');
-  modalContent.className = 'modal-content';
-  return modalContent;
+function createModalContent(child) {
+  const tagName = 'div';
+  const className = 'modal-content';
+  return createElement(tagName, className, [child]);
 }
 
-function createModalBody(element) {
-  const modalBody = document.createElement('div');
-  modalBody.className = 'modal-body';
-  modalBody.append(element);
-  return modalBody;
+function createModalDialog(child) {
+  const tagName = 'div';
+  const className = 'modal-dialog modal-dialog-scrollable';
+  return createElement(tagName, className, [child]);
 }
 
 export default class Modal {
@@ -36,14 +36,11 @@ export default class Modal {
   }
 
   render() {
-    const modalFade = createModalFade();
-    const modalDialog = createModalDialog();
-    const modalContent = createModalContent();
     const modalBody = createModalBody(this.card.renderModal());
+    const modalContent = createModalContent(modalBody);
+    const modalDialog = createModalDialog(modalContent);
+    const modalFade = createModalFade(modalDialog);
 
-    modalContent.append(modalBody);
-    modalDialog.append(modalContent);
-    modalFade.append(modalDialog);
     return modalFade;
   }
 }

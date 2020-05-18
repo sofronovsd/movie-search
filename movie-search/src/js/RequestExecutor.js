@@ -1,8 +1,14 @@
 import state from './State';
 import { showAlert } from './Alert';
 import Card from './Card';
-import { getSwiperWrapper } from './Helper';
+import { createElement, getSwiperWrapper } from './Helper';
 import { loadMovies } from './OmdbRestService';
+
+function createSlide(child) {
+  const tagName = 'div';
+  const className = 'swiper-slide';
+  return createElement(tagName, className, [child]);
+}
 
 export function executeMovieRequest(isNewSearch, searchValue) {
   state.page = isNewSearch ? 1 : state.page + 1;
@@ -17,11 +23,9 @@ export function executeMovieRequest(isNewSearch, searchValue) {
       }
       const cards = [];
       for (let i = 0; i < movies.length; i += 1) {
-        const slide = document.createElement('div');
-        slide.className = 'swiper-slide';
         const card = new Card(movies[i]);
         cards.push(card);
-        slide.append(card.renderCard());
+        const slide = createSlide(card.renderCard());
         if (isNewSearch) {
           getSwiperWrapper().append(slide);
         } else {
@@ -39,11 +43,9 @@ export function executeDefaultMovieRequest() {
     .then((movies) => {
       const cards = [];
       for (let i = 0; i < movies.length; i += 1) {
-        const slide = document.createElement('div');
-        slide.className = 'swiper-slide';
         const card = new Card(movies[i]);
         cards.push(card);
-        slide.append(card.renderCard());
+        const slide = createSlide(card.renderCard());
         getSwiperWrapper().append(slide);
       }
       state.slides = state.slides.concat(cards);
