@@ -11,4 +11,4 @@ const translate = (str) => {
     });
 };
 
-module.exports = { translate };
+export default translate;

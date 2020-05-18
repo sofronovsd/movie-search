@@ -4,7 +4,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = () => {
 
@@ -54,17 +53,10 @@ module.exports = () => {
 
         plugins: [
             new CleanWebpackPlugin(),
-            // new FaviconsWebpackPlugin('./src/img/big.jpg'),
             new CopyPlugin([
                 {
                     from: './src/img', to: './img'
                 },
-                // {
-                //     from: './src/audio', to: './audio'
-                // },
-                // {
-                //     from: './src/icon', to: ''
-                // }
             ]),
             new HtmlWebpackPlugin({
                 template: './src/index.html'

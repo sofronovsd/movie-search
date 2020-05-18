@@ -36,7 +36,8 @@ export default function initSwiper() {
 
   state.swiper.on('slideChange', () => {
     const { length } = state.swiper.slides;
-    if (length - state.swiper.activeIndex < 8) {
+    const gapForNewDownload = 8;
+    if (length - state.swiper.activeIndex < gapForNewDownload) {
       showSpinner();
       executeMovieRequest(false, state.searchString)
         .then(() => hideSpinner());

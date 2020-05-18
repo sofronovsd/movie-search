@@ -23,4 +23,4 @@ const loadMovies = (searchValue, page) => {
     });
 };
 
-module.exports = { loadMovies, loadMovieById };
+export { loadMovies, loadMovieById };
