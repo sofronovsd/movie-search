@@ -20,7 +20,7 @@ describe('Test OmdbRestService requests', () => {
         const movies = loadMovies(searchValue, page);
 
         expect(global.fetch).toHaveBeenCalledTimes(1);
-        const url = `https://www.omdbapi.com/?s=${searchValue}&page=${page}&apikey=34b4c91`;
+        const url = `${process.env.OMDB_URL}?s=${searchValue}&page=${page}&apikey=${process.env.OMDB_KEY}`;
         expect(global.fetch).toHaveBeenCalledWith(url);
 
         movies.then(response => {
@@ -44,7 +44,7 @@ describe('Test OmdbRestService requests', () => {
         const movies = loadMovieById(id);
 
         expect(global.fetch).toHaveBeenCalledTimes(1);
-        const url = `https://www.omdbapi.com/?i=${id}&apikey=34b4c91`;
+        const url = `${process.env.OMDB_URL}?i=${id}&apikey=${process.env.OMDB_KEY}`;
         expect(global.fetch).toHaveBeenCalledWith(url);
 
         movies.then(response => {
@@ -73,7 +73,7 @@ describe('Test OmdbRestService requests', () => {
         const movies = loadMovies(searchValue, page);
 
         expect(global.fetch).toHaveBeenCalledTimes(1);
-        const url = `https://www.omdbapi.com/?s=${searchValue}&page=${page}&apikey=34b4c91`;
+        const url = `${process.env.OMDB_URL}?s=${searchValue}&page=${page}&apikey=${process.env.OMDB_KEY}`;
         expect(global.fetch).toHaveBeenCalledWith(url);
 
         movies

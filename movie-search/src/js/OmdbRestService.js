@@ -1,5 +1,5 @@
 const loadMovieById = (id) => {
-  const movieInfoUrl = `https://www.omdbapi.com/?i=${id}&apikey=34b4c91`;
+  const movieInfoUrl = `${process.env.OMDB_URL}?i=${id}&apikey=${process.env.OMDB_KEY}`;
   return fetch(movieInfoUrl)
     .then((response) => response.json())
     .then((response) => {
@@ -11,7 +11,7 @@ const loadMovieById = (id) => {
 };
 
 const loadMovies = (searchValue, page) => {
-  const url = `https://www.omdbapi.com/?s=${searchValue}&page=${page}&apikey=34b4c91`;
+  const url = `${process.env.OMDB_URL}?s=${searchValue}&page=${page}&apikey=${process.env.OMDB_KEY}`;
   return fetch(url)
     .then((response) => response.json())
     .then((response) => {
