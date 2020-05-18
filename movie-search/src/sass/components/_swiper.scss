@@ -1,6 +1,10 @@
 .swiper-container {
   width: 95%;
   height: 500px;
+
+  @media screen and (max-width: $mobile-max-width) {
+    height: 600px;
+  }
 }
 
 .swiper-pagination, .swiper-button-next, .swiper-button-prev {

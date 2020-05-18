@@ -58,12 +58,12 @@ export default class Card {
     img.src = this.img;
     img.alt = 'poster';
     img.onerror = () => { img.src = '../img/image-not-found.png'; };
-    return img;
+    return createElement('div', 'card-img-container', [img]);
   }
 
   createLink(child) {
     const tagName = 'a';
-    const link = createElement(tagName, [child]);
+    const link = createElement(tagName, undefined, [child]);
     link.href = `https://www.imdb.com/title/${this.id}`;
     link.target = '_blank';
     return link;
