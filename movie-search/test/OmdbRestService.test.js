@@ -1,50 +1,88 @@
-const {loadMovies, loadMovieById} = require('../src/js/OmdbRestService');
+import {loadMovieById, loadMovies} from "../src/js/OmdbRestService";
 
-test('Service should return list of movies', done => {
+describe('Test OmdbRestService requests', () => {
 
-    const mockSuccessResponse = Promise.resolve({Search: ['search']});
-    const mockJsonPromise = Promise.resolve(mockSuccessResponse);
-    const mockFetchPromise = Promise.resolve({
-        json: () => mockJsonPromise,
+    test('Service should return list of movies', done => {
+
+        const successResponseObject = {
+            Search: ['search'],
+            Response: 'True'
+        };
+        const mockSuccessResponse = Promise.resolve(successResponseObject);
+        const mockJsonPromise = Promise.resolve(mockSuccessResponse);
+        const mockFetchPromise = Promise.resolve({
+            json: () => mockJsonPromise,
+        });
+        global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
+
+        const searchValue = 'мама';
+        const page = 1;
+        const movies = loadMovies(searchValue, page);
+
+        expect(global.fetch).toHaveBeenCalledTimes(1);
+        const url = `https://www.omdbapi.com/?s=${searchValue}&page=${page}&apikey=34b4c91`;
+        expect(global.fetch).toHaveBeenCalledWith(url);
+
+        movies.then(response => {
+            expect(response).toStrictEqual([successResponseObject]);
+
+            global.fetch.mockClear();
+            done();
+        })
     });
-    global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
 
-    const searchValue = 'мама';
-    const page = 1;
-    const movies = loadMovies(searchValue, page);
+    test('Service should return movie', done => {
 
-    expect(global.fetch).toHaveBeenCalledTimes(1);
-    const url = `http://www.omdbapi.com/?s=${searchValue}&page=${page}&apikey=34b4c91`;
-    expect(global.fetch).toHaveBeenCalledWith(url);
+        const mockSuccessResponse = {movie: "movie", Response: 'True'};
+        const mockJsonPromise = Promise.resolve(mockSuccessResponse);
+        const mockFetchPromise = Promise.resolve({
+            json: () => mockJsonPromise,
+        });
+        global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
 
-    movies.then(response => {
-        expect(response).toStrictEqual([{Search: ['search']}]);
+        const id = 'id';
+        const movies = loadMovieById(id);
 
-        global.fetch.mockClear();
-        done();
-    })
-});
+        expect(global.fetch).toHaveBeenCalledTimes(1);
+        const url = `https://www.omdbapi.com/?i=${id}&apikey=34b4c91`;
+        expect(global.fetch).toHaveBeenCalledWith(url);
 
-test('Service should return movie', done => {
+        movies.then(response => {
+            expect(response).toBe(mockSuccessResponse);
 
-    const mockSuccessResponse = {movie: "movie"};
-    const mockJsonPromise = Promise.resolve(mockSuccessResponse);
-    const mockFetchPromise = Promise.resolve({
-        json: () => mockJsonPromise,
+            global.fetch.mockClear();
+            done();
+        })
     });
-    global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
 
-    const id = 'id';
-    const movies = loadMovieById(id);
+    test('Service should return error if something goes wrong', done => {
 
-    expect(global.fetch).toHaveBeenCalledTimes(1);
-    const url = `http://www.omdbapi.com/?i=${id}&apikey=34b4c91`;
-    expect(global.fetch).toHaveBeenCalledWith(url);
+        const errorResponseObject = {
+            Error: 'error',
+            Response: 'False'
+        };
+        const mockErrorResponse = Promise.resolve(errorResponseObject);
+        const mockJsonPromise = Promise.resolve(mockErrorResponse);
+        const mockFetchPromise = Promise.resolve({
+            json: () => mockJsonPromise,
+        });
+        global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
 
-    movies.then(response => {
-        expect(response).toBe(mockSuccessResponse);
+        const searchValue = 'мама';
+        const page = 1;
+        const movies = loadMovies(searchValue, page);
 
-        global.fetch.mockClear();
-        done();
-    })
+        expect(global.fetch).toHaveBeenCalledTimes(1);
+        const url = `https://www.omdbapi.com/?s=${searchValue}&page=${page}&apikey=34b4c91`;
+        expect(global.fetch).toHaveBeenCalledWith(url);
+
+        movies
+            .catch(err => {
+                expect(err).toStrictEqual(errorResponseObject.Error);
+
+                global.fetch.mockClear();
+                done();
+            })
+    });
+
 });
